@@ -36,9 +36,9 @@ https.get(options, (res) => {
       const events = JSON.parse(data);
       console.log(events);
     } else {
-      console.error(`Error: ${res.statusCode} - ${res.statusMessage}`);
+      (res.statusCode===404)? console.error(`${user} es un user invalido`): console.log(`Error: ${res.statusCode}`);
     }
   });
 }).on('error', (err) => {
-  console.error(`Error: ${err.message}`);
+  console.error(`${err.message}`);
 });
