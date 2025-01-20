@@ -32,9 +32,24 @@ https.get(options, (res) => {
 
   res.on('end', () => {
     if (res.statusCode === 200) {
-      // Parsear y mostrar datos
       const events = JSON.parse(data);
-      console.log(events);
+
+      events.map((e) => {
+        const res = `* ${e.type} en ${e.repo.name}. `
+
+        if(e.type==='PushEvent'){
+          const commits = e.payload.commits;
+          if (Array.isArray(commits)) { 
+            commits.forEach((commit) => { 
+              console.log(res+'Mensaje: '+ commit.message); 
+            });
+          }
+        }else if(e.type==='CreateEvent'){
+          console.log(res+ 'Creacion: '+ e.payload.ref_type)
+        }else{
+          console.log(res+ 'Action: '+ e.payload.action)
+        }
+      });
     } else {
       (res.statusCode===404)? console.error(`${user} es un user invalido`): console.log(`Error: ${res.statusCode}`);
     }
